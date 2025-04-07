@@ -693,8 +693,9 @@ namespace loik
     else if (this->mu_update_strat_ == ADMMPenaltyUpdateStrat::MAXEIGENVALUE)
     {
       // use max eigen value strategy
-      throw(std::runtime_error("[FirstOrderLoikOptimizedTpl::UpdateMu]: mu update strategy "
-                               "MAXEIGENVALUE not yet implemented"));
+      throw(std::runtime_error(
+        "[FirstOrderLoikOptimizedTpl::UpdateMu]: mu update strategy "
+        "MAXEIGENVALUE not yet implemented"));
     }
     else
     {

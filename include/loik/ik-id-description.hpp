@@ -36,15 +36,16 @@ namespace loik
     {
       if (nj_ != nb_ + 1)
       {
-        throw(std::runtime_error("[IkProblemFormulation::IkProblemFormulation]: nb does not equal "
-                                 "to nj - 1, robot model not supported !!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::IkProblemFormulation]: nb does not equal "
+          "to nj - 1, robot model not supported !!!"));
       }
 
       if (eq_c_dim != 6)
       {
-        throw(
-          std::runtime_error("[IkProblemFormulation::IkProblemFormulation]: equality constraint "
-                             "dimension is not 6, problem formulation not supported !!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::IkProblemFormulation]: equality constraint "
+          "dimension is not 6, problem formulation not supported !!!"));
       }
 
       H_refs_.reserve(static_cast<std::size_t>(nj));
@@ -103,8 +104,9 @@ namespace loik
         H_refs.size() != static_cast<std::size_t>(nj_)
         || v_refs.size() != static_cast<std::size_t>(nj_))
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateReferences]: input arguments "
-                                 "'H_refs', 'v_refs' have wrong size!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateReferences]: input arguments "
+          "'H_refs', 'v_refs' have wrong size!!"));
       }
       H_refs_ = H_refs;
       v_refs_ = v_refs;
@@ -122,8 +124,9 @@ namespace loik
       // check constraint specification is consistant
       if (!((active_task_constraint_ids.size() == Ais.size()) && ((Ais.size() == bis.size()))))
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateEqConstraints]: "
-                                 "task_constraint_ids, Ais, and bis have different size !!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraints]: "
+          "task_constraint_ids, Ais, and bis have different size !!!"));
       }
 
       // check constraint dimension is consistent between input arguments!
@@ -136,16 +139,18 @@ namespace loik
       // check if number of equality constraints has changed
       if (active_task_constraint_ids.size() != static_cast<std::size_t>(nc_eq_))
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateEqConstraints]: number of equality "
-                                 "constraints doesn't match initialization!!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraints]: number of equality "
+          "constraints doesn't match initialization!!!"));
       }
 
       // check if equality constraint dim has changed
       if (Ais[0].rows() != eq_c_dim_)
       {
         // TODO: need to check constraint dimension for each Ai and bi, not just the first ones
-        throw(std::runtime_error("[IkProblemFormulation::UpdateEqConstraints]: equality constraint "
-                                 "dimension has changed!!! Updating constraint dimension"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraints]: equality constraint "
+          "dimension has changed!!! Updating constraint dimension"));
       }
 
       active_task_constraint_ids_ = active_task_constraint_ids;
@@ -167,8 +172,9 @@ namespace loik
       // if 'c_id' not present in 'active_task_constraint_ids_', invoke 'AddEqConstraint()'
       if (found_it == active_task_constraint_ids_.end())
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateEqConstraint]: constraint doesn't "
-                                 "yet exist at link 'c_id' !!! "));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraint]: constraint doesn't "
+          "yet exist at link 'c_id' !!! "));
       }
 
       // check if constraint dimension is consistent
@@ -185,9 +191,9 @@ namespace loik
       // if 'c_id' appear more than once, then something went wrong, throw.
       if (c_id_count > 1)
       {
-        throw(
-          std::runtime_error("[IkProblemFormulation::UpdateEqConstraint]: multiple constraint "
-                             "specification for the same link id, not supported, terminating !!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraint]: multiple constraint "
+          "specification for the same link id, not supported, terminating !!!"));
       }
 
       // get index of 'c_id' in 'active_task_constraint_ids_'
@@ -212,8 +218,9 @@ namespace loik
       // if 'c_id' not present in 'active_task_constraint_ids_', then throw
       if (found_it == active_task_constraint_ids_.end())
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateEqConstraint]: constraint doesn't "
-                                 "yet exist at link 'c_id' !!! "));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateEqConstraint]: constraint doesn't "
+          "yet exist at link 'c_id' !!! "));
       }
 
       // get index of 'c_id' in 'active_task_constraint_ids_'
@@ -244,14 +251,16 @@ namespace loik
         // check constraint dimension
         if (Ai.rows() != bi.rows())
         {
-          throw(std::runtime_error("[IkProblemFormulation::AddEqConstraint]: input arguments "
-                                   "constraint dimension inconsistent !!!"));
+          throw(std::runtime_error(
+            "[IkProblemFormulation::AddEqConstraint]: input arguments "
+            "constraint dimension inconsistent !!!"));
         }
 
         if (Ai.rows() != static_cast<std::size_t>(eq_c_dim_))
         {
-          throw(std::runtime_error("[IkProblemFormulation::AddEqConstraint]: input constraint "
-                                   "dimension differ from existing constriant dimension!!!"));
+          throw(std::runtime_error(
+            "[IkProblemFormulation::AddEqConstraint]: input constraint "
+            "dimension differ from existing constriant dimension!!!"));
         }
 
         active_task_constraint_ids_.push_back(c_id);
@@ -297,16 +306,17 @@ namespace loik
       // check arguments have some dimension
       if (lb.size() != ub.size())
       {
-        throw(std::runtime_error("[IkProblemFormulation::UpdateIneqConstraints]: lower bound and "
-                                 "upper bound have different dimensions!!!"));
+        throw(std::runtime_error(
+          "[IkProblemFormulation::UpdateIneqConstraints]: lower bound and "
+          "upper bound have different dimensions!!!"));
       }
 
       // check is inequality constraint dimension has changed
       if (lb.size() != ineq_c_dim_)
       {
-        throw(
-          std::runtime_error("IkProblemFormulation::UpdateIneqConstraints]: inequality constraint "
-                             "dimension has changed, this is not supported currently!!!"));
+        throw(std::runtime_error(
+          "IkProblemFormulation::UpdateIneqConstraints]: inequality constraint "
+          "dimension has changed, this is not supported currently!!!"));
       }
 
       lb_ = lb;
@@ -521,8 +531,9 @@ namespace loik
         }
         else
         {
-          throw(std::runtime_error("[IkProblemStandardQPFormulation::UpdateQPADMMSolveInit]: "
-                                   "parent id < 0, this can't happen !!!"));
+          throw(std::runtime_error(
+            "[IkProblemStandardQPFormulation::UpdateQPADMMSolveInit]: "
+            "parent id < 0, this can't happen !!!"));
         }
       }
 
