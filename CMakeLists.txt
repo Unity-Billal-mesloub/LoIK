@@ -65,7 +65,6 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
-include(${JRL_CMAKE_MODULES}/python.cmake)
 include(${JRL_CMAKE_MODULES}/boost.cmake)
 include(${JRL_CMAKE_MODULES}/ide.cmake)
 include(${JRL_CMAKE_MODULES}/apple.cmake)

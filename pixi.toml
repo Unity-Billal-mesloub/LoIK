@@ -25,7 +25,6 @@ ninja = ">=1.12.1,<1.13"
 
 [dependencies]
 eigen = ">=3.4.0,<3.5"
-python = ">=3.10"
 pinocchio = ">=3.0.0,<3.2"
 boost = ">=1.84.0,<1.85"
 example-robot-data = ">=4.1.0,<4.2"
