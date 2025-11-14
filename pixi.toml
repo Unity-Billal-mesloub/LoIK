@@ -77,7 +77,7 @@ scripts = ["development/scripts/pixi/activation.sh"]
 scripts = ["development/scripts/pixi/activation.bat"]
 
 
-# Increment the version number with PINOCCHIO_VERSION variable
+# Increment the version number with LOIK_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
 
