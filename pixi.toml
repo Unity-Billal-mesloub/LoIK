@@ -1,5 +1,5 @@
 [workspace]
-name = "LoIK"
+name = "loik"
 version = "1.0.0"
 description = "LoIK is a simple yet efficient (constrained) differential inverse kinematics solver for robotics"
 authors = ["Bruce Wingo <wingobruce47@gmail.com>"]
@@ -8,6 +8,27 @@ platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
 license = "BSD-2-Clause"
 license-file = "LICENSE"
 preview = ["pixi-build"]
+
+[package]
+name = { workspace = true }
+version = { workspace = true }
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "0.3.*" }
+
+[package.build.config]
+extra-args = ["-DBUILD_TESTING=OFF"]
+
+[package.build-dependencies]
+pkg-config = ">=0.29.2"
+
+[package.host-dependencies]
+eigen = ">=3.4.0"
+pinocchio = ">=3.0.0"
+libboost-devel = ">=1.84.0"
+
+[package.run-dependencies]
+libboost-devel = ">=1.80.0"
 
 [dependencies]
 ccache = ">=4.9.1"
@@ -105,6 +126,16 @@ python = "3.14.*"
 [feature.python-oldest.dependencies]
 python = "3.10.*"
 
+[feature.test-pixi-build.dependencies]
+loik = { path = "." }
+cmake = ">=3.22"
+cxx-compiler = "*"
+cmake-package-check = "*"
+
+[feature.test-pixi-build.tasks]
+test-cmake = "cmake-package-check loik --targets loik::loik"
+test = { depends-on = ["test-cmake"] }
+
 [environments]
 default = { features = ["python-latest"], solve-group = "python-latest" }
 clang = { features = ["clang", "python-latest"] }
@@ -116,3 +147,4 @@ new-version = { features = [
   "python-latest",
 ], solve-group = "python-latest" }
 clang-cl = { features = ["clang-cl", "python-latest"] }
+test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
