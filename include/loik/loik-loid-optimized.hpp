@@ -14,6 +14,8 @@
 #include <pinocchio/multibody/fwd.hpp>
 #include <pinocchio/multibody/visitor.hpp>
 
+#include <iostream>
+
 namespace loik
 {
 

@@ -28,6 +28,7 @@
 #include <boost/fusion/algorithm.hpp>
 #include <boost/range/combine.hpp>
 
+#include <iostream>
 #include <cstddef>
 #include <set>
 
