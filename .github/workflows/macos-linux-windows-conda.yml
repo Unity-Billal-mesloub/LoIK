@@ -2,6 +2,8 @@ name: CI - MacOS/Linux/Windows via Pixi
 
 on:
   push:
+    branches:
+      - devel
     paths-ignore:
       - .gitignore
       - '*.md'
@@ -19,29 +21,37 @@ concurrency:
 
 jobs:
   loik-pixi:
-    name: ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
+    name: Standard - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.os }}
     env:
       CCACHE_BASEDIR: ${GITHUB_WORKSPACE}
       CCACHE_DIR: ${GITHUB_WORKSPACE}/.ccache
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 6
+      # Since pixi will install a compiler, the compiler mtime will be changed.
+      # This can invalidate the cache (https://ccache.dev/manual/latest.html#config_compiler_check)
+      CCACHE_COMPILERCHECK: content
 
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, macos-15-intel]
-        environment: [default]
+        environment: [default, python-oldest]
         build_type: [Release, Debug]
 
         include:
           - os: windows-latest
+            build_type: Release
             environment: default
           - os: windows-latest
+            build_type: Release
+            environment: python-oldest
+          - os: windows-latest
+            build_type: Release
             environment: clang-cl
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
 
@@ -51,28 +61,52 @@ jobs:
           key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
           restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}}
 
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@v0.9.3
         with:
           cache: true
           environments: ${{ matrix.environment }}
 
-      - name: Build LoIK [MacOS/Linux]
-        shell: pixi run bash -el {0}
-        if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
+      - name: Clear ccache statistics [MacOS/Linux/Windows]
+        run: |
+          pixi run -e ${{ matrix.environment }} ccache -z
+
+      - name: Build LoIK [MacOS/Linux/Windows]
+        shell: bash -el {0}
         env:
-          CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
+          LOIK_BUILD_TYPE: ${{ matrix.build_type }}
           CMAKE_BUILD_PARALLEL_LEVEL: 4
         run: |
           pixi run -e ${{ matrix.environment }} test
 
-      - name: Build LoIK [Windows]
-        shell: pixi run bash -el {0}
-        if: contains(matrix.os, 'windows')
-        env:
-          CMAKE_BUILD_TYPE: Release
-          CMAKE_BUILD_PARALLEL_LEVEL: 4
+      - name: Display ccache statistics [MacOS/Linux/Windows]
+        shell: bash -el {0}
         run: |
-          pixi run -e ${{ matrix.environment }} test
+          pixi run -e ${{ matrix.environment }} ccache -sv
+
+  loik-pixi-build:
+    name: Pixi build - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-15-intel, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - uses: prefix-dev/setup-pixi@v0.9.3
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: 4
+        with:
+          cache: true
+          environments: test-pixi-build
+
+      - name: Test package [MacOS/Linux/Windows]
+        run: |
+          pixi run -e test-pixi-build test
 
   check:
     if: always()
@@ -80,6 +114,7 @@ jobs:
 
     needs:
       - loik-pixi
+      - loik-pixi-build
 
     runs-on: Ubuntu-latest
 
