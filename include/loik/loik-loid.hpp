@@ -12,6 +12,8 @@
 #include <pinocchio/algorithm/aba.hpp>
 #include <pinocchio/multibody/fwd.hpp>
 
+#include <iostream>
+
 namespace loik
 {
 

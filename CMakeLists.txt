@@ -2,7 +2,7 @@
 # Copyright (C) 2024 INRIA
 #
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 
 set(PROJECT_NAME loik)
 set(PROJECT_DESCRIPTION "Low-Order Inverse Kinematics")
@@ -56,9 +56,12 @@ set(DOXYGEN_USE_MATHJAX YES)
 set(DOXYGEN_USE_TEMPLATE_CSS YES)
 
 # Use BoostConfig module distributed by boost library instead of using FindBoost module distributed
-# by CMake
-if(POLICY CMP0167)
-  cmake_policy(SET CMP0167 NEW)
+# by CMake (to remove in 3.30). This policy is not working when using clang-cl.
+if(NOT WIN32 OR NOT ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+  if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+    set(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
+  endif()
 endif()
 include(${JRL_CMAKE_MODULES}/base.cmake)
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
