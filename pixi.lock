@@ -3,6 +3,8 @@ environments:
   clang:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -145,6 +147,8 @@ environments:
   clang-cl:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/ampl-asl-1.0.0-he0c23c2_2.conda
@@ -242,6 +246,8 @@ environments:
   default:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -717,6 +723,8 @@ environments:
   lint:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1248,6 +1256,8 @@ environments:
   new-version:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1727,6 +1737,8 @@ environments:
   python-oldest:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -2199,6 +2211,8 @@ environments:
   test-pixi-build:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -7675,6 +7689,8 @@ packages:
   version: 1.0.0
   build: h9352c13_0
   subdir: win-64
+  variants:
+    cxx_compiler: vs2019
   depends:
   - libboost-devel >=1.80.0
   - vc >=14.2,<15
@@ -7690,6 +7706,7 @@ packages:
   version: 1.0.0
   build: hbf21a9e_0
   subdir: linux-64
+  variants: {}
   depends:
   - libboost-devel >=1.80.0
   - libstdcxx >=15
@@ -7704,6 +7721,7 @@ packages:
   version: 1.0.0
   build: hbf21a9e_0
   subdir: osx-64
+  variants: {}
   depends:
   - libboost-devel >=1.80.0
   - libcxx >=21
@@ -7717,6 +7735,7 @@ packages:
   version: 1.0.0
   build: hbf21a9e_0
   subdir: osx-arm64
+  variants: {}
   depends:
   - libboost-devel >=1.80.0
   - libcxx >=21
